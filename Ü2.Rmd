@@ -1,0 +1,89 @@
+---
+title: "Übung 2"
+author: "Valentin Marquart"
+date: "16.5.2017"
+output:
+  html_document: default
+  pdf_document:
+    keep_tex: yes
+    latex_engine: lualatex
+---
+
+
+
+Binominal-Verteilung
+---
+Die Binominal-Verteilung ist durch folgende Formel bestimmt:
+
+$p_r=\frac{factorial(n)}{(factorial(n-r)*factorial(r))}*(1-p)^{(n-r)}*p^r$
+
+Stichprobe: n
+
+Erfolgswahrscheinlichkeit: p
+
+Trefferanzahl: r
+
+Berechnete Auftrittswahrscheinlichkeit der Binominalverteilung: p_r
+
+```{r}
+n = 5
+p = 0.15
+r = seq(0,5)
+p_r=(factorial(n)/(factorial(n-r)*factorial(r)))*(1-p)^(n-r)*p^r
+plot(p_r,type = "b",ylab = 'Auftrittswahrscheinlichkeit p_r',
+     main = 'Binominal-Verteilung')
+```
+
+Diskrete Werte der Binominal-Verteilung:
+```{r kable, echo=FALSE, warning=FALSE}
+# More styling options: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
+library(knitr)
+table <- data.frame('Trefferanzahl'=r,'Auftrittswahrscheinlichkeit p_r'=p_r)
+kable(table)
+```
+
+Poisson-Verteilung
+---
+Die Poisson-Verteilung gehorcht folgender Formel:
+$p_x = \frac{\lambda^x}{factorial(x)}*e^\lambda$
+
+$\lambda = \frac{Anzahl der Punkte}{Anzahl der Areale/Flaechen}$
+
+p = Trefferwahrscheinlichkeit
+
+n = Stichprobenanzahl, 'Jahrhundert-Hochwasser' (=100)
+
+x = Treffer
+
+p_x = Poisson-Wahrscheinlichkeit
+
+```{r, echo=TRUE}
+n = 100
+p = 0.03
+x = seq(0,30)
+par(mfrow=c(1,3)) # Plot 3 figures, side by side
+
+lambda_003 = n*p
+p_x = (lambda_003^(x)/factorial(x))*exp(lambda_003)
+plot(p_x, type='b',ylab='Poisson-Wahrscheinlichkeit p_x',main='Poisson-Verteilung \n mit p=0.03')
+
+lambda_001 = n*0.01
+p_x = (lambda_001^(x)/factorial(x))*exp(lambda_001)
+plot(p_x, type='b',ylab='Poisson-Wahrscheinlichkeit p_x', main='Poisson-Verteilung \n mit p=0.01')
+
+lambda_010 = n*0.1
+p_x = (lambda_010^(x)/factorial(x))*exp(lambda_010)
+plot(p_x, type='b',ylab='Poisson-Wahrscheinlichkeit p_x',main='Poisson-Verteilung \n mit p=0.10')
+
+```
+
+
+\newpage
+
+Anmerkungen und Shortcuts
+---
+
+\itemize
+\item Check Spelling	`F7`
+\item Replace and Find	`Command+Shift+J`
+\item Compile PDF/HTML with `CMD-SHIFT-K`
