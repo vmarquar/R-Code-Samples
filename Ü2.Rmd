@@ -3,10 +3,10 @@ title: "Übung 2"
 author: "Valentin Marquart"
 date: "16.5.2017"
 output:
-  html_document: default
   pdf_document:
     keep_tex: yes
     latex_engine: lualatex
+  html_document: default
 ---
 
 
