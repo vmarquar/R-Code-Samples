@@ -21,7 +21,7 @@ output:
 # Load your data from an existing project, skip large import scripts and data wrangling
 load('cleandata.RData')
 plot(gwt$`GW-Temperatur_Nov2009`)
-
+print(summary(PAK1))
 ```
 
 ```{r}
