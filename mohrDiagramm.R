@@ -1,4 +1,4 @@
-# Written by vmarquar on 09.05.2017
+# Written by V. Marquart on 09.05.2017
 # Can be used to evaluate cohesion and angle of friction by (pocket-)penetrometer and (pocket-)shear-taster
 # Disclaimer: This has been written quick&dirty and probably contains bugs. Feel free to fork / submit improvements :)
 # Output are two ggplot:
