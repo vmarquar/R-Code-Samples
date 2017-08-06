@@ -1,17 +1,6 @@
-### A piper diagram based on the ternary plot example here: http://srmulcahy.github.io/2012/12/04/ternary-plots-r.html
-### This was written quickly, and most likely contains bugs - I advise you to check it first.
-### Jason Lessels jlessels@gmail.com
-
-### This now consists of two functions. transform_piper_data transforms the data to match
-### the coordinates of the piper diagram. ggplot_piper does all of the background.
-
-### Edit by V.Marquart on 17.04.2017 - added conversion from mg/L to meq % and meq mmol/L
-### Alternatively, conversion from mg/L into meq mol/L can be done here: http://www.nafwa.org/convert1.php or here: /Users/Valentin/LRZ Sync+Share/Hydrochem Praktikum/Ionenbilanz.xlsx
-### And here: Conversion from mmol/L into meq %: /Users/Valentin/LRZ Sync+Share/Hydrochem Praktikum/Ionenbilanz.xlsx
-
-### INPUT DATA HERE: [mg/L] or [g/L], alternatively meq [%] can be pasted directly into transform_piper_data function
-data=as.data.frame(list("Mg"=c(16.39), "Ca"=c(81.8), "K"=c(1.1), "Na"=c(5.0),"NH4"=c(0.018), "Cl"=c(10.35), "Fl"=c(0.048), "SO4"=c(18.75), "NO2"=c(0.013), "NO3"=c(6.41), "HCO3"=c(335.6),"WaterType"=c(2,2,1,2,3)),row.names=c("A","B","C","D","E"))
-### END INPUT
+################# HELPER FUNCTIONS #########
+library(ggplot2)
+library(shiny)
 
 mg_meq_conversion <- function(Mg, Ca, K, Na, NH4, Cl, Fl, SO4, NO2, NO3, HCO3){
   # input as mg/L or g/L(datatype vector or float)
@@ -107,7 +96,7 @@ ggplot_piper <- function() {
     coord_equal(ratio=1)+
     geom_text(aes(17,50, label="Mg^{2+phantom()}"), angle=60, size=3, parse=TRUE) +
     geom_text(aes(82.5,50, label="Na^{+phantom()} + K^{+phantom()}"), angle=-60, size=3, parse=TRUE) +
-   geom_text(aes(50,-10, label="Ca^{2+phantom()}"), size=3, parse=TRUE) +
+    geom_text(aes(50,-10, label="Ca^{2+phantom()}"), size=3, parse=TRUE) +
 
 
     geom_text(aes(170,-10, label="Cl^-phantom()"), size=3, parse=TRUE) +
@@ -130,28 +119,67 @@ ggplot_piper <- function() {
           axis.title.x = element_blank(), axis.title.y = element_blank())
   return(p)
 }
-### A plan and simple piper diagram
-
-### input ions here:
-data=data
-### convert from mg/L to mmol/L (or from g/L to mol/L)
-data_meq_mmol = mg_meq_conversion(Mg=data$Mg, Ca=data$Ca, K=data$K, Na=data$Na, NH4=data$NH4, Cl=data$Cl, Fl=data$Fl, SO4=data$SO4, NO2=data$NO2, NO3=data$NO3, HCO3=data$HCO3)
-### convert from mmol/L molequivalents into meq in percent
-data_meq_perc = meq_mmol_percent_conversion(Mg=data_meq_mmol$Mg, Ca=data_meq_mmol$Ca, K=data_meq_mmol$K, Na=data_meq_mmol$Na, NH4=data_meq_mmol$NH4, Cl=data_meq_mmol$Cl, Fl=data_meq_mmol$Fl, SO4=data_meq_mmol$SO4, NO2=data_meq_mmol$NO2, NO3=data_meq_mmol$NO3, HCO3=data_meq_mmol$HCO3)
-#transform the data into piper based coordinates
-piper_data <- transform_piper_data(Ca=data_meq_perc$Ca, Mg = data_meq_perc$Mg, Cl=data_meq_perc$Cl, SO4= data_meq_perc$SO4, name=data$WaterType)
-# The piper function now just plots the background
-ggplot_piper()
 
 
-# Now points can be added like...
-ggplot_piper() + geom_point(aes(x,y), data=piper_data)
-# # colouring the points can be done using the observation value.
-# ggplot_piper() + geom_point(aes(x,y, colour=factor(observation)), data=piper_data)
-# # The size can be changed like..
-# ggplot_piper() + geom_point(aes(x,y, colour=factor(observation)), size=4, data=piper_data)
-# ## Change colours and shapes and merging the legends together
-# ggplot_piper() + geom_point(aes(x,y, colour=factor(observation), shape=factor(observation)), size=4, data=piper_data) +
-#   scale_colour_manual(name="legend name must be the same", values=c("#999999", "#E69F00", "#56B4E9"), labels=c("Control", "Treatment 1", "Treatment 2")) +
-#   scale_shape_manual(name="legend name must be the same", values=c(1,2,3), labels=c("Control", "Treatment 1", "Treatment 2"))
 
+################## SERVER ##################
+server <- function(input, output, session) {
+  output$distPlot <- renderPlot({
+    #data=as.data.frame(list("Mg"=c(16.39), "Ca"=c(81.8), "K"=c(1.1), "Na"=c(5.0),"NH4"=c(0.018), "Cl"=c(10.35),
+    #                       "Fl"=c(0.048), "SO4"=c(18.75), "NO2"=c(0.013),
+    #                       "NO3"=c(6.41), "HCO3"=c(335.6),"WaterType"=c(2,2,1,2,3)),row.names=c("A","B","C","D","E"))
+    print(data)
+    #data=as.data.frame(list("Mg"=input$Mg, "Ca"=input$Ca, "K"=input$K, "Na"=input$Na,"NH4"=input$NH4, "Cl"=input$Cl, "Fl"=input$Fl, "SO4"=input$SO4, "NO2"=input$NO2, "NO3"=input$NO3, "HCO3"=input$HCO3,"WaterType"=c(2,2,1,2,3)),row.names=c("A","B","C","D","E"))
+    data=as.data.frame(list("Mg"=input$Mg, "Ca"=input$Ca, "K"=input$K, "Na"=input$Na,"NH4"=input$NH4,
+                            "Cl"=input$Cl, "Fl"=input$Fl, "SO4"=input$SO4, "NO2"=input$NO2,
+                            "NO3"=input$NO3, "HCO3"=input$HCO3,"WaterType"=c(2,2,1,2,3)),row.names=c("A","B","C","D","E"))
+
+
+    #data=as.data.frame(list(input$Mg, input$Ca, input$K, input$Na,input$NH4,input$Cl,input$Fl,input$SO4,input$NO2,input$NO3,input$HCO3,"WaterType"=c(2,2,1,2,3)),row.names=c("A","B","C","D","E"))
+    ### convert from mg/L to mmol/L (or from g/L to mol/L)
+    data_meq_mmol = mg_meq_conversion(Mg=data$Mg, Ca=data$Ca, K=data$K, Na=data$Na, NH4=data$NH4, Cl=data$Cl, Fl=data$Fl, SO4=data$SO4, NO2=data$NO2, NO3=data$NO3, HCO3=data$HCO3)
+    ### convert from mmol/L molequivalents into meq in percent
+    data_meq_perc = meq_mmol_percent_conversion(Mg=data_meq_mmol$Mg, Ca=data_meq_mmol$Ca, K=data_meq_mmol$K, Na=data_meq_mmol$Na, NH4=data_meq_mmol$NH4, Cl=data_meq_mmol$Cl, Fl=data_meq_mmol$Fl, SO4=data_meq_mmol$SO4, NO2=data_meq_mmol$NO2, NO3=data_meq_mmol$NO3, HCO3=data_meq_mmol$HCO3)
+    #transform the data into piper based coordinates
+    piper_data <- transform_piper_data(Ca=data_meq_perc$Ca, Mg = data_meq_perc$Mg, Cl=data_meq_perc$Cl, SO4= data_meq_perc$SO4, name=data$WaterType)
+
+    # Now points can be added like...
+    ggplot_piper() + geom_point(aes(x,y), data=piper_data)
+
+  })
+
+
+#   observe({
+#     # limit the scherfestigkeit to max the half size of druckfestigkeit
+#     updateSliderInput(session, "tf", value = input$tf,
+#                       min = 0, max = input$tp/2)
+#   })
+
+}
+
+
+################## UI ##################
+ui <- fluidPage(
+  fluidRow(
+    column(3,
+           h4("Select Cation Concentrations"),
+           numericInput("Mg", "Mg [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("Ca", "Ca [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("K", "K [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("Na", "Na [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("NH4", "NH4 [mg/l or mol/l]:", 10, step=0.01)
+           ),
+    column(3,
+           h4("Select Anion Concentrations"),
+           numericInput("Cl", "Cl [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("SO4", "SO4 [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("NO2", "NO2 [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("NO3", "NO3 [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("HCO3", "HCO3 [mg/l or mol/l]:", 10, step=0.01),
+           numericInput("Fl", "Fl [mg/L or mol/L]:",0.048, step=0.01)
+           ),
+      column(6,plotOutput("distPlot"))
+    )
+  )
+
+shinyApp(ui = ui, server = server)
