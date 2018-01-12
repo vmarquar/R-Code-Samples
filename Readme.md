@@ -13,9 +13,13 @@ To create geotechnical profiles (crosssections) run the function `create_profile
 * Add in situ density of explorated geological layers
 
 #### Examples
-![Borehole Crossection](Readme-Images/create_profile_example.png)
+
 <div style='float: center'>
-  <img style='width: 600px' src="Readme-Images/create_profile_first_only.png"></img>
+  <img style='width: 600px' src="Readme-Images/create_profile_example.png"></img>
+</div>
+
+<div style='float: center'>
+  <img style='width: 300px' src="Readme-Images/create_profile_first_only.png"></img>
 </div>
 
 ### Mohr Coulumb Circle for "Flügelscherversuch" and "Taschenpenetrometer" Tests
