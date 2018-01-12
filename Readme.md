@@ -25,7 +25,7 @@ To create geotechnical profiles (crosssections) run the function `create_profile
 ### Mohr Coulumb Circle for "Flügelscherversuch" and "Taschenpenetrometer" Tests
 Run following Code to display a nice Mohr-Coulumb Plot:
 
-```
+```r
 # Input data for sand:
 
 kN_penetrometer_1b_parallel <- mean(c(325,360,250,450,375))
