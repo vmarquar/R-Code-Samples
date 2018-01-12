@@ -43,7 +43,7 @@ color_dictionary <- load_colors()
 
 # Read Input Data (needs to have all drilling names in a column)
 # Mandatory Fields: Petrographie = Ton, Schluff, etc.; Bohr.ID = Bohrungsid; Schichtmaechtigkeit = Schichtmächtigkeit in meter
-df <- xls_to_dataframe(path = '/Users/Valentin/Desktop/Bohrlochdaten/Bohrlochdaten.xlsx',
+df <- xls_to_dataframe(path = '/Users/Valentin/Library/Mobile Documents/3L68KQB4HG~com~readdle~CommonDocuments/Documents/Ingenieur-und-Hydro/0 Allgemeine Zusatzdokumente/Code Samples/R-Code-Samples/BohrprofilPlot/Bohrlochdaten.xlsx',
                        sheet = "Rohdaten-Teil1",range='A1:M114',header=TRUE) #L34 sind genau 3 Bohrungen
 
 names(df)[12] <- "Schichtmaechtigkeit"
@@ -62,7 +62,11 @@ create_profile <- function(plot_type="blank mit_schichten mit_schichten_konsiste
   # 5. die Länge der Striche und Position der Texte kann mit df$x-0.15 variiert werden
   # 6. Das Seiten-zu-Höhenverhältnis kann unter theme(aspect.ratio=1) verändert werden.
   # POSSIBLE PLOT_TYPES = blank, mit_schichten, mit_schichten_konsistenzen, mit_schichten_konsistenzen_lagerung
-
+  
+  if(plot_type == "blank mit_schichten mit_schichten_konsistenzen mit_schichten_konsistenzen_lagerung"){
+    stop("Please select a plotting type, e.g. 'blank','mit_schichten','mit_schichten_konsistenzen','mit_schichten_konsistenzen_lagerung'")
+  }
+  
   # Create an x value from unique BohrungsID to seperate plots (when there is no specific x supplied)
   if(!"x" %in% colnames(df)){
     df <- transform(df,x=as.numeric(factor(df$Bohr.ID)));
