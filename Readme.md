@@ -2,7 +2,7 @@
 This repo contains a series of usable functions to plot and visualize geological and hydrogeological datasets.
 
 ### Create Geotechnical Profiles
-To create geotechnical profiles (crosssections) run the function `create_profile()`. The function reads in borehole data which has to be stored in a specific formatted excel table. An Example can be found under (/borehole-template/borehole-data.xlsx)[/borehole-template/borehole-data.xlsx].
+To create geotechnical profiles (crosssections) run the function `create_profile()`. The function reads in borehole data which has to be stored in a specific formatted excel table. An Example can be found here: [Excel Example File](borehole-template/borehole-data.xlsx).
 
 #### Possible Options:
 * Create Only 1 borehole profile
