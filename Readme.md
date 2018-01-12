@@ -33,3 +33,8 @@ kN_penetrometer_1b_perpendicular <- mean(c(250,450,440,425,400))
 
 plot <- mohrAuswertung(shear = kN_shear_1b_parallel, penetrometer = kN_penetrometer_1b_parallel, title='Probe Sand 1b - parallel')
 ```
+
+#### Output Example:
+<div style='float: center'>
+  <img style='width: 600px' src="Readme-Images/mohr-coulomb-example.png"></img>
+</div>
